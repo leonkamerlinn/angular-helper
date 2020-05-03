@@ -2,5 +2,170 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "newProjectRoot": "projects",
-  "projects": {}
+  "projects": {
+    "angular-helper": {
+      "projectType": "library",
+      "root": "projects/angular-helper",
+      "sourceRoot": "projects/angular-helper/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/angular-helper/tsconfig.lib.json",
+            "project": "projects/angular-helper/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/angular-helper/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/angular-helper/src/test.ts",
+            "tsConfig": "projects/angular-helper/tsconfig.spec.json",
+            "karmaConfig": "projects/angular-helper/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/angular-helper/tsconfig.lib.json",
+              "projects/angular-helper/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "angular-helper-example": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/angular-helper-example",
+      "sourceRoot": "projects/angular-helper-example/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/angular-helper-example",
+            "index": "projects/angular-helper-example/src/index.html",
+            "main": "projects/angular-helper-example/src/main.ts",
+            "polyfills": "projects/angular-helper-example/src/polyfills.ts",
+            "tsConfig": "projects/angular-helper-example/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/angular-helper-example/src/favicon.ico",
+              "projects/angular-helper-example/src/assets"
+            ],
+            "styles": [
+              "projects/angular-helper-example/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/angular-helper-example/src/environments/environment.ts",
+                  "with": "projects/angular-helper-example/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "angular-helper-example:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "angular-helper-example:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "angular-helper-example:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/angular-helper-example/src/test.ts",
+            "polyfills": "projects/angular-helper-example/src/polyfills.ts",
+            "tsConfig": "projects/angular-helper-example/tsconfig.spec.json",
+            "karmaConfig": "projects/angular-helper-example/karma.conf.js",
+            "assets": [
+              "projects/angular-helper-example/src/favicon.ico",
+              "projects/angular-helper-example/src/assets"
+            ],
+            "styles": [
+              "projects/angular-helper-example/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/angular-helper-example/tsconfig.app.json",
+              "projects/angular-helper-example/tsconfig.spec.json",
+              "projects/angular-helper-example/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/angular-helper-example/e2e/protractor.conf.js",
+            "devServerTarget": "angular-helper-example:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "angular-helper-example:serve:production"
+            }
+          }
+        }
+      }
+    }},
+  "cli": {
+    "analytics": "68d28073-31e7-4888-89c3-84b3ae65c15b"
+  },
+  "defaultProject": "angular-helper"
 }
