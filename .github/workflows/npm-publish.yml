@@ -27,15 +27,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: https://registry.npmjs.org/
-      - name: publish:prod && pack && publish
+      - name: npm ci and npm run build:prod
         run: |
-          pwd
-          npm i
-          npm run build:prod
-          pwd
-          npm run pack
-          pwd
-          npm run publish
+          npm ci
+          npm run publish:ci
           pwd
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
