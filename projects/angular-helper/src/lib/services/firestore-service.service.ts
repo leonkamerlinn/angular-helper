@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {Observable, from} from 'rxjs';
-import {map, tap, take, switchMap, mergeMap, expand, takeWhile} from 'rxjs/operators';
+import { Observable, from } from 'rxjs';
+import { map, tap, take, switchMap, mergeMap, expand, takeWhile } from 'rxjs/operators';
 
 import * as firebase from 'firebase/app';
 import {
@@ -67,7 +67,7 @@ export class FirestoreService {
                     return actions.map((a: DocumentChangeAction<T>) => {
                         const data: Object = a.payload.doc.data() as T;
                         const id = a.payload.doc.id;
-                        return {id, ...data};
+                        return { id, ...data };
                     });
                 }),
             );
@@ -165,7 +165,7 @@ export class FirestoreService {
 
     /// create a reference between two documents
     connect(host: DocPredicate<any>, key: string, doc: DocPredicate<any>) {
-        return this.doc(host).update({[key]: this.doc(doc).ref});
+        return this.doc(host).update({ [key]: this.doc(doc).ref });
     }
 
     /// returns a documents references mapped to AngularFirestoreDocument
@@ -196,8 +196,8 @@ export class FirestoreService {
 
         const currentTime = this.timestamp;
 
-        batch.update(itemDoc, {timestamp: currentTime});
-        batch.update(userDoc, {timestamp: currentTime});
+        batch.update(itemDoc, { timestamp: currentTime });
+        batch.update(userDoc, { timestamp: currentTime });
 
         /// commit operations
         return batch.commit();
