@@ -11,10 +11,16 @@ import {
     Action,
     DocumentSnapshotDoesNotExist, DocumentSnapshotExists, DocumentChangeAction
 } from "@angular/fire/firestore";
+import { DocumentReference } from "@angular/fire/firestore/interfaces";
+import FieldValue = firebase.firestore.FieldValue;
 
 export type CollectionPredicate<T> = string | AngularFirestoreCollection<T>;
 export type DocPredicate<T> = string | AngularFirestoreDocument<T>;
-export type WithId<T> = T & { id: string };
+export type WithId<T> = T & {
+    id: string,
+    updatedAt?: FieldValue,
+    createdAt?: FieldValue,
+};
 
 
 @Injectable({
@@ -40,12 +46,16 @@ export class FirestoreService {
     /// Get Data
     /// **************
 
-    doc$<T>(ref: DocPredicate<T>): Observable<T> {
+    doc$<T>(ref: DocPredicate<T>): Observable<WithId<T>> {
         return this.doc(ref)
             .snapshotChanges()
             .pipe(
                 map((doc: Action<DocumentSnapshotDoesNotExist | DocumentSnapshotExists<T>>) => {
-                    return doc.payload.data() as T;
+                    const obj = doc.payload.data() as T;
+                    return {
+                        ...obj,
+                        id: doc.payload.id
+                    }
                 }),
             );
     }
@@ -143,13 +153,20 @@ export class FirestoreService {
         return this.doc(ref).delete();
     }
 
-    add<T>(ref: CollectionPredicate<T>, data): Promise<firebase.firestore.DocumentReference> {
+
+    async add<T>(ref: CollectionPredicate<T>, data): Promise<WithId<T>> {
         const timestamp = this.timestamp;
-        return this.col(ref).add({
+        const createdDocument: DocumentReference = await this.col(ref).add({
             ...data,
             updatedAt: timestamp,
             createdAt: timestamp,
         });
+
+        return this.doc$<T>(createdDocument.path).toPromise()
+    }
+
+    add$<T>(ref: CollectionPredicate<T>, data): Observable<WithId<T>> {
+        return from(this.add(ref, data));
     }
 
     geopoint(lat: number, lng: number): firebase.firestore.GeoPoint {
