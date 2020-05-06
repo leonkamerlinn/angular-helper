@@ -82,13 +82,29 @@ export class FirestoreService {
         return firebase.firestore.FieldValue.serverTimestamp();
     }
 
-    set<T>(ref: DocPredicate<T>, data: any): Promise<void> {
-        const timestamp = this.timestamp;
-        return this.doc(ref).set({
-            ...data,
-            updatedAt: timestamp,
-            createdAt: timestamp,
+    set<T>(ref: DocPredicate<T>, data: any, merge: boolean = true): Promise<T> {
+        return new Promise(async (resolve, reject) => {
+            const timestamp = this.timestamp;
+            try {
+                await this.doc(ref).set({
+                    ...data,
+                    updatedAt: timestamp,
+                    createdAt: timestamp,
+                }, { merge });
+
+                if (merge) {
+                    const obj = await this.doc$(ref).toPromise();
+                    resolve(obj);
+                } else {
+                    resolve(data);
+                }
+
+            } catch (e) {
+                reject(e);
+            }
         });
+
+
     }
 
     update<T>(ref: DocPredicate<T>, data: any): Promise<void> {
@@ -116,7 +132,7 @@ export class FirestoreService {
     }
 
     /// If doc exists update, otherwise set
-    upsert<T>(ref: DocPredicate<T>, data: any): Promise<void> {
+ /*   upsert<T>(ref: DocPredicate<T>, data: any): Promise<void> {
         const doc = this.doc(ref)
             .snapshotChanges()
             .pipe(take(1))
@@ -125,7 +141,7 @@ export class FirestoreService {
         return doc.then((snap: Action<DocumentSnapshotDoesNotExist | DocumentSnapshotExists<T>>) => {
             return snap.payload.exists ? this.update(ref, data) : this.set(ref, data);
         });
-    }
+    }*/
 
     /// **************
     /// Inspect Data
