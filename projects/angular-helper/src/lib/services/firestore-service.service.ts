@@ -14,6 +14,8 @@ import {
 
 type CollectionPredicate<T> = string | AngularFirestoreCollection<T>;
 type DocPredicate<T> = string | AngularFirestoreDocument<T>;
+type WithId<T> = T & { id: string };
+
 
 @Injectable({
     providedIn: 'root',
@@ -59,15 +61,16 @@ export class FirestoreService {
     }
 
     /// with Ids
-    colWithIds$<T>(ref: CollectionPredicate<T>, queryFn?): Observable<any[]> {
+    colWithIds$<T>(ref: CollectionPredicate<T>, queryFn?): Observable<WithId<T>[]> {
         return this.col(ref, queryFn)
             .snapshotChanges()
             .pipe(
                 map((actions: DocumentChangeAction<T>[]) => {
                     return actions.map((a: DocumentChangeAction<T>) => {
-                        const data: Object = a.payload.doc.data() as T;
-                        const id = a.payload.doc.id;
-                        return { id, ...data };
+                        const data: T = a.payload.doc.data() as T;
+                        const id: string = a.payload.doc.id;
+                        const obj: WithId<T> = { id, ...data };
+                        return obj;
                     });
                 }),
             );
