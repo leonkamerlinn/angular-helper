@@ -12,9 +12,9 @@ import {
     DocumentSnapshotDoesNotExist, DocumentSnapshotExists, DocumentChangeAction
 } from "@angular/fire/firestore";
 
-type CollectionPredicate<T> = string | AngularFirestoreCollection<T>;
-type DocPredicate<T> = string | AngularFirestoreDocument<T>;
-type WithId<T> = T & { id: string };
+export type CollectionPredicate<T> = string | AngularFirestoreCollection<T>;
+export type DocPredicate<T> = string | AngularFirestoreDocument<T>;
+export type WithId<T> = T & { id: string };
 
 
 @Injectable({
