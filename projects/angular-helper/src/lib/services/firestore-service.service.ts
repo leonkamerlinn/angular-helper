@@ -82,8 +82,8 @@ export class FirestoreService {
         return firebase.firestore.FieldValue.serverTimestamp();
     }
 
-    set<T>(ref: DocPredicate<T>, data: any, merge: boolean = true): Promise<T> {
-        return new Promise(async (resolve, reject) => {
+    set$<T>(ref: DocPredicate<T>, data: any, merge: boolean = true): Observable<T> {
+        const promise = new Promise<T>(async (resolve, reject) => {
             const timestamp = this.timestamp;
             try {
                 await this.doc(ref).set({
@@ -103,8 +103,17 @@ export class FirestoreService {
                 reject(e);
             }
         });
+        return from(promise);
 
+    }
 
+    set<T>(ref: DocPredicate<T>, data: any): Promise<void> {
+        const timestamp = this.timestamp;
+        return this.doc(ref).set({
+            ...data,
+            updatedAt: timestamp,
+            createdAt: timestamp,
+        });
     }
 
     update<T>(ref: DocPredicate<T>, data: any): Promise<void> {
@@ -112,6 +121,19 @@ export class FirestoreService {
             ...data,
             updatedAt: this.timestamp,
         });
+    }
+
+    delete$<T>(ref: DocPredicate<T>): Observable<T> {
+        return from(new Promise<T>(async (resolve, reject) => {
+            try {
+                const obj = await this.doc$<T>(ref).toPromise();
+                await this.doc(ref).delete();
+                resolve(obj)
+            } catch (e) {
+                reject(e);
+            }
+        }));
+
     }
 
     delete<T>(ref: DocPredicate<T>): Promise<void> {
@@ -132,7 +154,7 @@ export class FirestoreService {
     }
 
     /// If doc exists update, otherwise set
- /*   upsert<T>(ref: DocPredicate<T>, data: any): Promise<void> {
+    upsert<T>(ref: DocPredicate<T>, data: any): Promise<void> {
         const doc = this.doc(ref)
             .snapshotChanges()
             .pipe(take(1))
@@ -141,7 +163,7 @@ export class FirestoreService {
         return doc.then((snap: Action<DocumentSnapshotDoesNotExist | DocumentSnapshotExists<T>>) => {
             return snap.payload.exists ? this.update(ref, data) : this.set(ref, data);
         });
-    }*/
+    }
 
     /// **************
     /// Inspect Data
