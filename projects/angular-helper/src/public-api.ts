@@ -12,3 +12,4 @@ export * from './lib/store/index'
 export * from './lib/store/effects/index'
 export * from './lib/store/actions/index'
 export * from './lib/store/reducers/index'
+export * from './lib/resolvers/auth-user.resolver';
