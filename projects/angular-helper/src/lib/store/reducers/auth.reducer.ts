@@ -7,10 +7,7 @@ export interface AuthState {
 }
 
 // Default data / initial state
-
-
 export const initialState: AuthState = {
-
     authUser: undefined
 };
 
