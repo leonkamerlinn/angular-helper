@@ -1,5 +1,5 @@
 import { AuthUser } from '../../models/auth-user';
-import { AuthActions } from "../actions/auth.actions";
+import { AuthActions, AuthActionTypes } from "../actions/auth.actions";
 
 
 export interface AuthState {
@@ -10,8 +10,7 @@ export interface AuthState {
 
 
 export const initialState: AuthState = {
-    loaded: false,
-    error: undefined,
+
     authUser: undefined
 };
 
