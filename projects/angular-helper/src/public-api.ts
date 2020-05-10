@@ -11,7 +11,5 @@ export * from './lib/pipes/doc.pipe';
 export * from './lib/store/index';
 export * from './lib/store/effects/index';
 export * from './lib/store/actions/index';
-export * from './lib/store/actions/auth.actions';
 export * from './lib/store/reducers/index';
-export * from './lib/store/reducers/auth.reducer';
 export * from './lib/resolvers/auth-user.resolver';
