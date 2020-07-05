@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MultipleUploaderComponent implements OnInit {
 
-    ngOnInit(): void {
+    ngOnInit() {
     }
     isHovering: boolean;
 

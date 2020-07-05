@@ -96,7 +96,7 @@ export class FirestoreService {
     }
 
     set$<T>(ref: DocPredicate<T>, data: any, merge: boolean = true): Observable<T> {
-        const promise = new Promise<T>(async (resolve, reject) => {
+        return from(new Promise<T>(async (resolve, reject) => {
             const timestamp = this.timestamp;
             try {
                 await this.doc(ref).set({
@@ -115,8 +115,8 @@ export class FirestoreService {
             } catch (e) {
                 reject(e);
             }
-        });
-        return from(promise);
+        }));
+
 
     }
 

@@ -1,4 +1,4 @@
-<div *ngIf="percentage | async as pct">
+<div *ngIf="task.percentageChanges() | async as pct">
     <progress [value]="pct" max="100"></progress>
     {{ pct | number }}%
 </div>
@@ -8,10 +8,9 @@
 
     {{ snap.bytesTransferred }} of {{ snap.totalBytes }}
 
-    <div *ngIf="downloadURL as url">
+    <div *ngIf="path">
         <h3>Results!</h3>
-        <img [src]="url"><br>
-        <a [href]="url" target="_blank" rel="noopener">Download Me!</a>
+        <img [src]="path | firestoreUrl | async"><br>
     </div>
 
     <button (click)="task.pause()" [disabled]="!isActive(snap)">Pause</button>
