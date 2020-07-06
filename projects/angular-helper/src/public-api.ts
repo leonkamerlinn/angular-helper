@@ -5,6 +5,7 @@
 export * from './lib/services/firestore-service.service';
 export * from './lib/resolvers/auth-user.resolver';
 export * from './lib/guards/guest.guard';
+export * from './lib/guards/auth-user-preload.guard';
 export * from './lib/services/firestore-service.module';
 export * from './lib/store/actions/router.action';
 export * from './lib/store/effects/router.effect';
