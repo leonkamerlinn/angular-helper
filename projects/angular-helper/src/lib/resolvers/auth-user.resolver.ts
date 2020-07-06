@@ -21,6 +21,8 @@ export class AuthUserResolver implements Resolve<AuthUser> {
                 (user) => {
                     if (user === undefined) {
                         return this.getFirebaseUser()
+                    } else if (!!user) {
+                        return of(user)
                     }
 
                     return of(null)
