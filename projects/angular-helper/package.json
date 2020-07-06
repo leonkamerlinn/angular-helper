@@ -1,6 +1,6 @@
 {
     "name": "leon-angular-helper",
-    "version": "1.4.4",
+    "version": "1.4.5",
     "description": "Angular Helper Library",
     "author": "Leon Kamerlin",
     "peerDependencies": {
