@@ -36,6 +36,7 @@ export class GuestGuard implements CanActivate, CanActivateChild {
 
     private activate(route: ActivatedRouteSnapshot): Observable<boolean> {
         const redirectUrl = route?.data?.redirectPath as Array<string>;
+        console.log('url', redirectUrl)
         if (!!redirectUrl) {
             return of(false)
         }
