@@ -15,16 +15,16 @@ export interface RouterStateUrl {
 }
 
 export interface State {
-    routerReducer: RouterReducerState<RouterStateUrl>;
-    authReducer: AuthState;
+    routerState: RouterReducerState<RouterStateUrl>;
+    authState: AuthState;
 }
 
 export const reducers: ActionReducerMap<State> = {
-    routerReducer: routerReducer,
-    authReducer: authReducer
+    routerState: routerReducer,
+    authState: authReducer
 };
 
-export const getRouterState = createFeatureSelector<RouterReducerState<RouterStateUrl>>('routerReducer');
+export const getRouterState = createFeatureSelector<RouterReducerState<RouterStateUrl>>('routerState');
 
 export class CustomSerializer
     implements RouterStateSerializer<RouterStateUrl> {

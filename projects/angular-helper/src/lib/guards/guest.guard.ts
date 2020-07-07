@@ -50,7 +50,7 @@ export class GuestGuard implements CanActivate, CanActivateChild {
     }
 
     private getAuthUser(): Observable<AuthUser | null> {
-        return this.store.select(state => state.authReducer?.authUser).pipe(
+        return this.store.select(state => state.authState?.authUser).pipe(
             first(),
             switchMap(
                 (user) => {
