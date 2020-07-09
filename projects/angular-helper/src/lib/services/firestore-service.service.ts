@@ -140,10 +140,12 @@ export class FirestoreService {
         return from(new Promise<WithId<T>>(async (resolve, reject) => {
             try {
                 const obj: WithId<T> = await this.doc$<T>(ref).toPromise();
-                await this.doc(ref).delete();
-                resolve(obj)
+                console.log(obj)
+                await this.delete(ref);
+                return resolve(obj)
             } catch (e) {
-                reject(e);
+                console.log(e)
+                return reject(e);
             }
         }));
 
