@@ -136,15 +136,12 @@ export class FirestoreService {
         });
     }
 
-    delete$<T>(ref: DocPredicate<T>): Observable<WithId<T>> {
-        return from(new Promise<WithId<T>>(async (resolve, reject) => {
+    delete$<T>(ref: DocPredicate<T>): Observable<string> {
+        return from(new Promise<string>(async (resolve, reject) => {
             try {
-                const obj: WithId<T> = await this.doc$<T>(ref).toPromise();
-                console.log(obj)
                 await this.delete(ref);
-                return resolve(obj)
+                return resolve('DELETED')
             } catch (e) {
-                console.log(e)
                 return reject(e);
             }
         }));
