@@ -95,8 +95,8 @@ export class FirestoreService {
         return firebase.firestore.FieldValue.serverTimestamp();
     }
 
-    set$<T>(ref: DocPredicate<T>, data: T & { id: string }, merge: boolean = true): Observable<T & { id: string }> {
-        return from(new Promise<T & { id: string }>(async (resolve, reject) => {
+    set$<T>(ref: DocPredicate<T>, data: T & { id: string | number }, merge: boolean = true): Observable<T & { id: string | number }> {
+        return from(new Promise<T & { id: string | number }>(async (resolve, reject) => {
             const timestamp = this.timestamp;
             try {
                 await this.doc(ref).set({
